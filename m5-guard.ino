@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include <time.h>
 #include "config.h"
+#include "tools/battery.h"
 
 const char *NTP_SERVER = "pool.ntp.org";
 const long GMT_OFFSET = 0;
@@ -73,6 +74,7 @@ String generateSteamCode(const char *secret) {
     }
 
     uint8_t hash[20];
+
     hmacSha1(key, keySize, timeBytes, sizeof(timeBytes), hash);
 
     int offset = hash[19] & 0x0F;
@@ -118,6 +120,8 @@ void showCode() {
     M5.Lcd.setTextSize(4);
     M5.Lcd.setTextDatum(CC_DATUM);
     M5.Lcd.drawString(code, M5.Lcd.width() / 2, M5.Lcd.height() / 2, 2);
+
+    showBattery();
 }
 
 void loop() {
@@ -141,4 +145,6 @@ void loop() {
 
         LAST_TIME = currentMillis;
     }
+
+    showBattery();
 }
