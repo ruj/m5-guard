@@ -126,6 +126,7 @@ void loop() {
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.fillScreen(BLACK);
         M5.Lcd.setTextSize(1);
+        M5.Lcd.setCursor(0, 0);
         M5.Lcd.println("Refreshing code");
 
         showCode();
