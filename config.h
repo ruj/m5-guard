@@ -5,4 +5,6 @@ extern const char* WIFI_SSID;
 extern const char* WIFI_PASSWORD;
 extern const char* SECRET;
 
+#define SCREEN_WIDTH 240
+
 #endif

@@ -1,12 +1,15 @@
 #ifndef BATTERY_H
 #define BATTERY_H
 
+#include <M5StickCPlus.h>
+#include "../config.h"
+
 int getBattery() {
     float batteryValue = M5.Axp.GetVbatData() * 1.1 / 1000;
     int battery = ((batteryValue - 3.0) / 1.2) * 100;
 
     if (battery > 100 || battery < 0) {
-      return -1;
+        return -1;
     }
 
     return battery;
@@ -32,7 +35,7 @@ void showBattery() {
     }
 
     M5.Lcd.setTextSize(1);
-    M5.Lcd.setCursor(240 - 30, 10);
+    M5.Lcd.setCursor(SCREEN_WIDTH - 30, 10);
     M5.Lcd.print(getBatteryString(battery));
     M5.Lcd.setTextColor(WHITE, BLACK);
 }
