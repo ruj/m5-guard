@@ -16,15 +16,8 @@ void setup() {
     M5.Lcd.println("Initializing");
     
     Serial.begin(115200);
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        M5.Lcd.println("Connecting to WiFi");
-    }
-
-    M5.Lcd.println("Connected to WiFi");
-
+    
+    connectToWifi();
     syncTime();
     topBar();
     showGuardCode();
@@ -54,6 +47,17 @@ void loop() {
             lastSyncSecond = currentSecond;
         }
     }
+}
+
+void connectToWifi() {
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        M5.Lcd.println("Connecting to WiFi");
+    }
+
+    M5.Lcd.println("Connected to WiFi");
 }
 
 void topBar() {
