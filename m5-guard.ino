@@ -4,8 +4,7 @@
 #include "tools/battery.h"
 #include "tools/guard.h"
 
-const long INTERVAL = 30000;
-unsigned long lastTime = 0;
+int lastSyncSecond = LAST_SYNC_SECOND;
 
 void setup() {
     M5.begin();
@@ -42,11 +41,16 @@ void loop() {
         M5.Lcd.println("Refreshing code");
 
         showGuardCode();
-        lastTime = millis();
     }
 
-    if (millis() - lastTime >= INTERVAL) {
-        showGuardCode();
-        lastTime = millis();
+    struct tm timeinfo;
+
+    if (getLocalTime(&timeinfo)) {
+        int currentSecond = timeinfo.tm_sec;
+
+        if ((currentSecond == 0 || currentSecond == 30) && currentSecond != lastSyncSecond) {
+            showGuardCode();
+            lastSyncSecond = currentSecond;
+        }
     }
 }
