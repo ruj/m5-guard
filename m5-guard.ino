@@ -5,7 +5,10 @@
 #include "tools/guard.h"
 #include "tools/utilities.h"
 
-int lastSyncSecond = LAST_SYNC_SECOND;
+unsigned long lastUpdate = 0;
+int lastSyncSecond = -1;
+int timeLeft = 30; 
+int lastTimeLeft = 30;
 
 void setup() {
     M5.begin();
@@ -20,7 +23,7 @@ void setup() {
     connectToWifi();
     syncTime();
     topBar();
-    showGuardCode();
+    showGuardCode(true);
 }
 
 void loop() {
@@ -34,17 +37,32 @@ void loop() {
         M5.Lcd.setTextSize(1);
         M5.Lcd.println("Refreshing code");
 
-        showGuardCode();
+        showGuardCode(true);
     }
 
     struct tm timeinfo;
-
     if (getLocalTime(&timeinfo)) {
         int currentSecond = timeinfo.tm_sec;
 
         if ((currentSecond == 0 || currentSecond == 30) && currentSecond != lastSyncSecond) {
-            showGuardCode();
+            showGuardCode(true);
+
             lastSyncSecond = currentSecond;
+            timeLeft = 30;
+        }
+
+        if (millis() - lastUpdate >= 1000) {
+            lastUpdate = millis();
+
+            if (timeLeft > 0) {
+                timeLeft--;
+            }
+
+            if (timeLeft != lastTimeLeft) {
+                showGuardCode(false);
+
+                lastTimeLeft = timeLeft;
+            }
         }
     }
 }

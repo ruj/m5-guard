@@ -10,6 +10,10 @@ const char *NTP_SERVER = "pool.ntp.org";
 const long GMT_OFFSET = 0;
 const int DAYLIGHT_OFFSET = 0;
 const char *CHARSET = "23456789BCDFGHJKMNPQRTVWXY";
+const int BAR_HEIGHT = 5;
+const int BAR_Y_POSITION = SCREEN_HEIGHT - BAR_HEIGHT;
+
+extern int timeLeft;
 
 void syncTime() {
     configTime(GMT_OFFSET, DAYLIGHT_OFFSET, NTP_SERVER);
@@ -92,14 +96,27 @@ String generateSteamCode(const char *secret) {
     return code;
 }
 
-void showGuardCode() {
-    M5.Lcd.fillScreen(BLACK);
+void showGuardCode(bool clearScreen) {
+    if (clearScreen) {
+        M5.Lcd.fillScreen(BLACK);
+    }
 
     String code = generateSteamCode(SECRET);
 
     M5.Lcd.setTextSize(4);
     M5.Lcd.setTextDatum(CC_DATUM);
     M5.Lcd.drawString(code, M5.Lcd.width() / 2, M5.Lcd.height() / 2, 2);
+
+    struct tm timeinfo;
+
+    if (getLocalTime(&timeinfo)) {
+        int currentSecond = timeinfo.tm_sec;
+        int secondsRemaining = 30 - (currentSecond % 30);
+        int lineWidth = (secondsRemaining / 30.0) * SCREEN_WIDTH;
+
+        M5.Lcd.fillRect(0, BAR_Y_POSITION, SCREEN_WIDTH, BAR_HEIGHT, BLACK);
+        M5.Lcd.fillRect(0, BAR_Y_POSITION, lineWidth, BAR_HEIGHT, DARKGREY);
+    }
 }
 
 #endif
