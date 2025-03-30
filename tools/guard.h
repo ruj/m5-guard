@@ -81,7 +81,7 @@ String generateSteamCode(const char *secret) {
     return code;
 }
 
-void showCode() {
+void showGuardCode() {
     M5.Lcd.fillScreen(BLACK);
 
     String code = generateSteamCode(SECRET);

@@ -27,7 +27,7 @@ void setup() {
 
     syncTime();
     showBattery();
-    showCode();
+    showGuardCode();
 }
 
 void loop() {
@@ -41,12 +41,12 @@ void loop() {
         M5.Lcd.setTextSize(1);
         M5.Lcd.println("Refreshing code");
 
-        showCode();
+        showGuardCode();
         lastTime = millis();
     }
 
     if (millis() - lastTime >= INTERVAL) {
-        showCode();
+        showGuardCode();
         lastTime = millis();
     }
 }
