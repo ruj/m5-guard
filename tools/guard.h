@@ -1,36 +1,35 @@
-#include "../config.h"
-
 #ifndef GUARD_H
 #define GUARD_H
+
+#include <M5StickCPlus.h>
+#include <mbedtls/md.h>
+#include <mbedtls/base64.h>
+#include <time.h>
+#include "../config.h"
 
 const char *NTP_SERVER = "pool.ntp.org";
 const long GMT_OFFSET = 0;
 const int DAYLIGHT_OFFSET = 0;
-
 const char *CHARSET = "23456789BCDFGHJKMNPQRTVWXY";
 
 void syncTime() {
     configTime(GMT_OFFSET, DAYLIGHT_OFFSET, NTP_SERVER);
 
     struct tm timeinfo;
-
     while (!getLocalTime(&timeinfo)) {
         M5.Lcd.println("Waiting for pool.ntp.org synchronization");
         delay(1000);
     }
-
     M5.Lcd.println("Synchronized time");
     delay(1000);
 }
 
 uint32_t getUnixTime() {
     struct tm timeinfo;
-
     if (!getLocalTime(&timeinfo)) {
         M5.Lcd.println("Error getting time");
         return 0;
     }
-
     return mktime(&timeinfo);
 }
 
@@ -62,21 +61,18 @@ String generateSteamCode(const char *secret) {
 
     uint32_t time = getUnixTime() / 30;
     uint8_t timeBytes[8];
-
     for (int i = 7; i >= 0; i--) {
         timeBytes[i] = time & 0xFF;
         time >>= 8;
     }
 
     uint8_t hash[20];
-
     hmacSha1(key, keySize, timeBytes, sizeof(timeBytes), hash);
 
     int offset = hash[19] & 0x0F;
     uint32_t fullCode = ((hash[offset] & 0x7F) << 24) | (hash[offset + 1] << 16) | (hash[offset + 2] << 8) | hash[offset + 3];
 
     String code = "";
-
     for (int i = 0; i < 5; i++) {
         code += CHARSET[fullCode % strlen(CHARSET)];
         fullCode /= strlen(CHARSET);
