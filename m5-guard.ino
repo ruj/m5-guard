@@ -3,6 +3,7 @@
 #include "config.h"
 #include "tools/battery.h"
 #include "tools/guard.h"
+#include "tools/utilities.h"
 
 int lastSyncSecond = LAST_SYNC_SECOND;
 
@@ -25,14 +26,14 @@ void setup() {
     M5.Lcd.println("Connected to WiFi");
 
     syncTime();
-    showBattery();
+    topBar();
     showGuardCode();
 }
 
 void loop() {
     M5.update();
 
-    showBattery();
+    topBar();
 
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.fillScreen(BLACK);
@@ -53,4 +54,27 @@ void loop() {
             lastSyncSecond = currentSecond;
         }
     }
+}
+
+void topBar() {
+    M5.Lcd.setTextColor(WHITE, BLACK);
+    M5.Lcd.setCursor(10, 10);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.println(getTimeString());
+    M5.Lcd.setCursor(SCREEN_WIDTH / 2 - 5, 10);
+
+    int battery = getBattery();
+
+    if (battery > 50) {
+        M5.Lcd.setTextColor(GREEN, BLACK);
+    } else if (battery > 25) {
+        M5.Lcd.setTextColor(YELLOW, BLACK);
+    } else {
+        M5.Lcd.setTextColor(RED, BLACK);
+    }
+
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setCursor(SCREEN_WIDTH - 30, 10);
+    M5.Lcd.print(getBatteryString(battery));
+    M5.Lcd.setTextColor(WHITE, BLACK);
 }
