@@ -17,9 +17,9 @@ void setup() {
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(WHITE, BLACK);
     M5.Lcd.println("Initializing");
-    
+
     Serial.begin(115200);
-    
+
     connectToWifi();
     syncTime();
     topBar();
@@ -41,6 +41,7 @@ void loop() {
     }
 
     struct tm timeinfo;
+
     if (getLocalTime(&timeinfo)) {
         int currentSecond = timeinfo.tm_sec;
 

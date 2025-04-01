@@ -10,8 +10,8 @@ const char *NTP_SERVER = "pool.ntp.org";
 const long GMT_OFFSET = 0;
 const int DAYLIGHT_OFFSET = 0;
 const char *CHARSET = "23456789BCDFGHJKMNPQRTVWXY";
-const int BAR_HEIGHT = 5;
-const int BAR_Y_POSITION = SCREEN_HEIGHT - BAR_HEIGHT;
+const long BAR_HEIGHT = 1.5;
+const int BAR_Y_POSITION = (SCREEN_HEIGHT - BAR_HEIGHT) - 10;
 
 extern int timeLeft;
 
@@ -113,9 +113,16 @@ void showGuardCode(bool clearScreen) {
         int currentSecond = timeinfo.tm_sec;
         int secondsRemaining = 30 - (currentSecond % 30);
         int lineWidth = (secondsRemaining / 30.0) * SCREEN_WIDTH;
+        int remainingTimeColor;
+
+        if (secondsRemaining > 7) {
+            remainingTimeColor = LIGHTGREY;
+        } else {
+            remainingTimeColor = RED;
+        }
 
         M5.Lcd.fillRect(0, BAR_Y_POSITION, SCREEN_WIDTH, BAR_HEIGHT, BLACK);
-        M5.Lcd.fillRect(0, BAR_Y_POSITION, lineWidth, BAR_HEIGHT, DARKGREY);
+        M5.Lcd.fillRect(10, BAR_Y_POSITION, lineWidth - 20, BAR_HEIGHT, remainingTimeColor);
     }
 }
 
