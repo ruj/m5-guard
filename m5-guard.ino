@@ -22,7 +22,7 @@ void setup() {
     connectToWifi();
     syncTime();
     drawTopBar();
-    showGuardCode(true);
+    drawGuardCode(true);
 }
 
 void loop() {
@@ -36,7 +36,7 @@ void loop() {
         M5.Lcd.setTextSize(1);
         M5.Lcd.println("Refreshing code");
 
-        showGuardCode(true);
+        drawGuardCode(true);
     }
 
     struct tm timeinfo;
@@ -45,7 +45,7 @@ void loop() {
         int currentSecond = timeinfo.tm_sec;
 
         if ((currentSecond == 0 || currentSecond == 30) && currentSecond != lastSyncSecond) {
-            showGuardCode(true);
+            drawGuardCode(true);
 
             lastSyncSecond = currentSecond;
             timeLeft = 30;
@@ -59,7 +59,7 @@ void loop() {
             }
 
             if (timeLeft != lastTimeLeft) {
-                showGuardCode(false);
+                drawGuardCode(false);
 
                 lastTimeLeft = timeLeft;
             }

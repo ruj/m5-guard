@@ -96,7 +96,7 @@ inline String generateSteamCode(const char *secret) {
     return code;
 }
 
-inline void showGuardCode(bool clearScreen) {
+inline void drawGuardCode(bool clearScreen) {
     if (clearScreen) {
         M5.Lcd.fillScreen(BLACK);
     }
