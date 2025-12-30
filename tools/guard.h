@@ -18,6 +18,11 @@ extern int timeLeft;
 inline void syncTime() {
     configTime(GMT_OFFSET, DAYLIGHT_OFFSET, NTP_SERVER);
 
+    setenv("TZ", TIMEZONE, 1);
+    tzset();
+
+    M5.Lcd.println("Timezone set to " + String(TIMEZONE));
+
     struct tm timeinfo;
 
     while (!getLocalTime(&timeinfo)) {

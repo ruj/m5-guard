@@ -13,5 +13,6 @@ extern const char* SECRET;
 
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 135
+#define TIMEZONE "UTC+3"
 
 #endif
