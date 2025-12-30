@@ -4,7 +4,7 @@
 #include <WiFi.h>
 #include "../config.h"
 
-bool connectToWifi(unsigned long timeoutMs = 15000) {
+inline bool connectToWifi(unsigned long timeoutMs = 15000) {
     WiFi.mode(WIFI_STA);
 
     const int networkCount = WIFI_NETWORK_SIZE;
