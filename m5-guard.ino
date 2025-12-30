@@ -1,9 +1,8 @@
 #include <M5StickCPlus.h>
 #include "config.h"
-#include "tools/battery.h"
 #include "tools/guard.h"
-#include "tools/utilities.h"
 #include "tools/wifi.h"
+#include "tools/ui.h"
 
 unsigned long lastUpdate = 0;
 int lastSyncSecond = -1;
@@ -22,14 +21,14 @@ void setup() {
 
     connectToWifi();
     syncTime();
-    topBar();
+    drawTopBar();
     showGuardCode(true);
 }
 
 void loop() {
     M5.update();
 
-    topBar();
+    drawTopBar();
 
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.fillScreen(BLACK);
@@ -68,25 +67,4 @@ void loop() {
     }
 }
 
-void topBar() {
-    M5.Lcd.setTextColor(WHITE, BLACK);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextSize(1);
-    M5.Lcd.println(getTimeString());
-    M5.Lcd.setCursor(SCREEN_WIDTH / 2 - 5, 10);
 
-    int battery = getBattery();
-
-    if (battery > 50) {
-        M5.Lcd.setTextColor(GREEN, BLACK);
-    } else if (battery > 25) {
-        M5.Lcd.setTextColor(YELLOW, BLACK);
-    } else {
-        M5.Lcd.setTextColor(RED, BLACK);
-    }
-
-    M5.Lcd.setTextSize(1);
-    M5.Lcd.setCursor(SCREEN_WIDTH - 30, 10);
-    M5.Lcd.print(getBatteryString(battery));
-    M5.Lcd.setTextColor(WHITE, BLACK);
-}
