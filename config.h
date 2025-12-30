@@ -1,8 +1,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-extern const char* WIFI_SSID;
-extern const char* WIFI_PASSWORD;
+struct WifiCredential {
+    const char* SSID;
+    const char* PASSWORD;
+};
+
+extern const WifiCredential WIFI_NETWORKS[];
+extern const int WIFI_NETWORK_SIZE;
+
 extern const char* SECRET;
 
 #define SCREEN_WIDTH 240
