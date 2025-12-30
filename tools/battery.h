@@ -1,7 +1,7 @@
 #ifndef BATTERY_H
 #define BATTERY_H
 
-int getBattery() {
+inline int getBattery() {
     float batteryValue = M5.Axp.GetVbatData() * 1.1 / 1000;
     int battery = ((batteryValue - 3.0) / 1.2) * 100;
 
@@ -12,7 +12,7 @@ int getBattery() {
     return battery;
 }
 
-String getBatteryString(int battery) {
+inline String getBatteryString(int battery) {
     if (battery == -1) {
         return "...";
     }

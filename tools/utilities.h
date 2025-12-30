@@ -1,7 +1,7 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-String getTimeString() {
+inline String getTimeString() {
     struct tm timeinfo;
 
     if (!getLocalTime(&timeinfo)) {

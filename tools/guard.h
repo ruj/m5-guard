@@ -6,16 +6,16 @@
 #include <time.h>
 #include "../config.h"
 
-const char *NTP_SERVER = "pool.ntp.org";
-const long GMT_OFFSET = 0;
-const int DAYLIGHT_OFFSET = 0;
-const char *CHARSET = "23456789BCDFGHJKMNPQRTVWXY";
-const long BAR_HEIGHT = 1.5;
-const int BAR_Y_POSITION = (SCREEN_HEIGHT - BAR_HEIGHT) - 10;
+inline constexpr const char *NTP_SERVER = "pool.ntp.org";
+inline constexpr const long GMT_OFFSET = 0;
+inline constexpr const int DAYLIGHT_OFFSET = 0;
+inline constexpr const char *CHARSET = "23456789BCDFGHJKMNPQRTVWXY";
+inline constexpr const long BAR_HEIGHT = 1.5;
+inline constexpr const int BAR_Y_POSITION = (SCREEN_HEIGHT - BAR_HEIGHT) - 10;
 
 extern int timeLeft;
 
-void syncTime() {
+inline void syncTime() {
     configTime(GMT_OFFSET, DAYLIGHT_OFFSET, NTP_SERVER);
 
     struct tm timeinfo;
@@ -31,7 +31,7 @@ void syncTime() {
     delay(1000);
 }
 
-uint32_t getUnixTime() {
+inline uint32_t getUnixTime() {
     struct tm timeinfo;
 
     if (!getLocalTime(&timeinfo)) {
@@ -43,7 +43,7 @@ uint32_t getUnixTime() {
     return mktime(&timeinfo);
 }
 
-void hmacSha1(const uint8_t *key, size_t keySize, const uint8_t *data, size_t dataSize, uint8_t *output) {
+inline void hmacSha1(const uint8_t *key, size_t keySize, const uint8_t *data, size_t dataSize, uint8_t *output) {
     mbedtls_md_context_t ctx;
     mbedtls_md_type_t mdType = MBEDTLS_MD_SHA1;
 
@@ -55,7 +55,7 @@ void hmacSha1(const uint8_t *key, size_t keySize, const uint8_t *data, size_t da
     mbedtls_md_free(&ctx);
 }
 
-String generateSteamCode(const char *secret) {
+inline String generateSteamCode(const char *secret) {
     uint8_t key[32];
     size_t keySize = 0;
 
@@ -96,7 +96,7 @@ String generateSteamCode(const char *secret) {
     return code;
 }
 
-void showGuardCode(bool clearScreen) {
+inline void showGuardCode(bool clearScreen) {
     if (clearScreen) {
         M5.Lcd.fillScreen(BLACK);
     }
