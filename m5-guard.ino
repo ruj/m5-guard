@@ -1,9 +1,9 @@
 #include <M5StickCPlus.h>
-#include <WiFi.h>
 #include "config.h"
 #include "tools/battery.h"
 #include "tools/guard.h"
 #include "tools/utilities.h"
+#include "tools/wifi.h"
 
 unsigned long lastUpdate = 0;
 int lastSyncSecond = -1;
@@ -66,17 +66,6 @@ void loop() {
             }
         }
     }
-}
-
-void connectToWifi() {
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        M5.Lcd.println("Connecting to WiFi");
-    }
-
-    M5.Lcd.println("Connected to WiFi");
 }
 
 void topBar() {
